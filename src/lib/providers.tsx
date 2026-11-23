@@ -2,11 +2,11 @@
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { SessionProvider } from '@supabase/auth-helpers-react';
+import { AuthProvider } from '@lib/auth';
 import { createClient } from '@supabase/supabase-js';
 import { useState, type ReactNode } from 'react';
 
-// Supabase client - will be configured after Supabase project is created
+// Supabase client - reads from env vars (loaded via expo-dotenv)
 const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL || '';
 const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || '';
 
@@ -28,9 +28,9 @@ export function Providers({ children }: { children: ReactNode }) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <SessionProvider supabaseClient={supabase}>
+      <AuthProvider>
         {children}
-      </SessionProvider>
+      </AuthProvider>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
